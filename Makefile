@@ -14,5 +14,5 @@ run:
 test:
 	npm run test
 
-coverage:
+test-coverage:
 	npm run test -- --coverage
