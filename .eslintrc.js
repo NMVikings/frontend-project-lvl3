@@ -1,17 +1,11 @@
 module.exports = {
   env: {
+    node: true,
     browser: true,
-    es6: true,
+    jest: true
   },
-  extends: ["airbnb-base"],
-  globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly",
-  },
+  plugins: ["babel", "jest"],
+  extends: ["airbnb-base", "plugin:jest/all"],
   parser: "babel-eslint",
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: "module",
-  },
   rules: {},
 };
