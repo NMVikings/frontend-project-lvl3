@@ -1,0 +1,22 @@
+{
+  "name": "frontend-project-lvl3",
+  "private": true,
+  "version": "1.0.0",
+  "description": "RSS aggregator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NMVikings/frontend-project-lvl3.git"
+  },
+  "keywords": [
+    "hexlet",
+    "rss",
+    "webpack",
+    "bootstrap"
+  ],
+  "author": "NMVikings",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NMVikings/frontend-project-lvl3/issues"
+  },
+  "homepage": "https://github.com/NMVikings/frontend-project-lvl3#readme"
+}
