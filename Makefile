@@ -6,3 +6,6 @@ build:
 
 lint:
 	npx eslint .
+
+run:
+	npx webpack-dev-server
