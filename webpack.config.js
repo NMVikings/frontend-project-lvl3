@@ -9,7 +9,11 @@ module.exports = {
         exclude: /node-modules/,
         use: { loader: 'babel-loader' },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [new HtmlWebpackPlugin({ template: 'index.html' })],
 };
