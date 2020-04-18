@@ -16,10 +16,12 @@ const handlers = {
     errorElement.innerText = error;
     elements.jumbotron.appendChild(errorElement);
   },
-  feedList: () => {},
+  feedList: (feedlist) => {
+    console.warn(feedlist);
+  },
 };
 
 
-const handleStateChange = (path, value) => handlers[path](value);
+const watcher = (path, value) => handlers[path](value);
 
-export default handleStateChange;
+export default watcher;

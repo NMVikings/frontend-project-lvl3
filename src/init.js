@@ -1,13 +1,13 @@
 import onChange from 'on-change';
 
-import handleStateChange from './views';
+import watcher from './watchers';
 import handleFormSubmit from './handlers';
 
 const init = () => {
   const state = onChange({
     input: { error: null },
     feedList: [],
-  }, handleStateChange);
+  }, watcher);
 
   document.querySelector('form').addEventListener('submit', handleFormSubmit(state));
 };
