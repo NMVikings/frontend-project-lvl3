@@ -2,6 +2,8 @@ const elements = {
   rssLinkInput: document.querySelector('input[name="rssLink"]'),
   button: document.querySelector('button'),
   feedback: document.querySelector('.feedback'),
+  rssItems: document.querySelector('.rss-feeds'),
+  rssPosts: document.querySelector('.rss-posts'),
 };
 
 const resetFormState = () => {
@@ -32,10 +34,17 @@ const formHandlers = {
   },
 };
 
+const createRssPostElement = ({ link, title }) => `
+  <div>
+    <a rel='noopener noreferrer' target="_blank" href=${link}>${title}</a>
+  </div>
+`;
+
 const handlers = {
   form: ({ state, message }) => formHandlers[state](message),
-  feedList: (feedlist) => {
-    console.warn(feedlist);
+  feeds: () => {},
+  posts: (posts) => {
+    elements.rssPosts.innerHTML = posts.map(createRssPostElement).join('\n');
   },
 };
 

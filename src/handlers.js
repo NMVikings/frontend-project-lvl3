@@ -12,7 +12,7 @@ const handleFormSubmit = (state) => (e) => {
   const formData = new FormData(formElem);
   const rssLink = formData.get('rssLink');
 
-  const isInFeed = state.feedList.find(({ url }) => url === rssLink);
+  const isInFeed = state.feeds.find(({ url }) => url === rssLink);
 
   if (isInFeed) {
     state.form = { state: 'error', message: 'This link is already in the feed!' };
@@ -23,10 +23,12 @@ const handleFormSubmit = (state) => (e) => {
     const parser = new Parser();
     return parser.parseString(data);
   }).then(({ title, description, items }) => {
-    const patchedItems = items.map((item) => ({ ...item, id: nanoid() }));
-    state.feedList.push({
-      url: rssLink, title, description, posts: patchedItems, id: nanoid(),
+    const feedId = nanoid();
+    const posts = items.map((item) => ({ ...item, id: nanoid(), feedId }));
+    state.feeds.push({
+      url: rssLink, id: feedId, title, description,
     });
+    state.posts.push(...posts);
     state.form = { state: 'success', message: 'RSS has been loaded' };
     formElem.reset();
   }).catch((err) => {

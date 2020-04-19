@@ -6,7 +6,8 @@ import handleFormSubmit from './handlers';
 const init = () => {
   const state = onChange({
     form: { state: 'default', message: null },
-    feedList: [],
+    feeds: [],
+    posts: [],
   }, watcher);
 
   document.querySelector('form').addEventListener('submit', handleFormSubmit(state));
