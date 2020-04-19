@@ -3,6 +3,7 @@
 import Axios from 'axios';
 import Parser from 'rss-parser';
 import { nanoid } from 'nanoid';
+import i18next from 'i18next';
 
 const handleFormSubmit = (state) => (e) => {
   e.preventDefault();
@@ -15,7 +16,7 @@ const handleFormSubmit = (state) => (e) => {
   const isInFeed = state.feeds.find(({ url }) => url === rssLink);
 
   if (isInFeed) {
-    state.form = { state: 'error', message: 'This link is already in the feed!' };
+    state.form = { state: 'error', message: i18next.t('form.errors.duplicate') };
     return;
   }
 
@@ -31,10 +32,10 @@ const handleFormSubmit = (state) => (e) => {
       url: rssLink, id: feedId, title, description,
     });
     state.posts.unshift(...posts);
-    state.form = { state: 'success', message: 'RSS has been loaded' };
+    state.form = { state: 'success', message: i18next.t('form.success') };
     formElem.reset();
-  }).catch((err) => {
-    state.form = { state: 'error', message: err.message };
+  }).catch(({ response: { status } }) => {
+    state.form = { state: 'error', message: i18next.t('form.errors.network', { status }) };
   });
 };
 
