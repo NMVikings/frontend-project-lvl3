@@ -19,7 +19,9 @@ const handleFormSubmit = (state) => (e) => {
     return;
   }
 
-  Axios.get(rssLink).then(({ data }) => {
+  const corsFreeRssLink = `https://cors-anywhere.herokuapp.com/${rssLink}`;
+
+  Axios.get(corsFreeRssLink).then(({ data }) => {
     const parser = new Parser();
     return parser.parseString(data);
   }).then(({ title, description, items }) => {
