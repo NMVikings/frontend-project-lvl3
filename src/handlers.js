@@ -27,10 +27,10 @@ const handleFormSubmit = (state) => (e) => {
   }).then(({ title, description, items }) => {
     const feedId = nanoid();
     const posts = items.map((item) => ({ ...item, id: nanoid(), feedId }));
-    state.feeds.push({
+    state.feeds.unshift({
       url: rssLink, id: feedId, title, description,
     });
-    state.posts.push(...posts);
+    state.posts.unshift(...posts);
     state.form = { state: 'success', message: 'RSS has been loaded' };
     formElem.reset();
   }).catch((err) => {
