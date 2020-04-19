@@ -1,13 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>RSS aggregator</title>
+    <style>
+      html:lang(en) *:not(:lang(en)) {
+        display: none;
+      }
+
+      html:lang(ru) *:not(:lang(ru)) {
+        display: none;
+      }
+    </style>
+    <title lang="en">RSS aggregator</title>
+    <title lang="ru">RSS агрегатор</title>
   </head>
   <body>
     <div class="container mt-5">
       <div class="jumbotron">
-        <h1>RSS Reader</h1>
-        <p class="lead">Start reading RSS today! It is easy, it is nicely.</p>
+        <h1 lang="en">RSS Reader</h1>
+        <h1 lang="ru">RSS Читалка</h1>
+        <p lang="en" class="lead">
+          Start reading RSS today! It is easy, it is nicely.
+        </p>
+        <p lang="ru" class="lead">
+          Начните читать RSS сегодня! Это легко, это весело.
+        </p>
         <p class="text-muted">https://ru.hexlet.io/lessons.rss</p>
         <form class="form-inline">
           <label class="form-group">
@@ -19,7 +35,10 @@
               name="rssLink"
             />
           </label>
-          <button type="submit" class="btn btn-primary ml-1">Add</button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <span lang="en">Add</span>
+            <span lang="ru">Добавить</span>
+          </button>
         </form>
         <div class="feedback">&nbsp;</div>
       </div>
