@@ -1,31 +1,23 @@
 const elements = {
   rssLinkInput: document.querySelector('input[name="rssLink"]'),
   button: document.querySelector('button'),
-  jumbotron: document.querySelector('.jumbotron'),
-};
-
-const createFeedbackElement = (message) => {
-  const element = document.createElement('div');
-  element.classList.add('feedback', 'text-success');
-  element.innerText = message;
-
-  return element;
+  feedback: document.querySelector('.feedback'),
 };
 
 const resetFormState = () => {
   elements.button.classList.remove('disabled');
   elements.rssLinkInput.classList.remove('is-invalid');
   elements.rssLinkInput.readOnly = false;
-  const feedbackElement = elements.jumbotron.querySelector('div.feedback');
-  if (feedbackElement) feedbackElement.remove();
+  elements.feedback.classList.remove('text-success', 'text-danger');
+  elements.feedback.innerText = '\u00A0';
 };
 
 const formHandlers = {
   default: resetFormState,
   success: (message) => {
     resetFormState();
-    const successElement = createFeedbackElement(message);
-    elements.jumbotron.appendChild(successElement);
+    elements.feedback.innerText = message;
+    elements.feedback.classList.add('text-success');
   },
   loading: () => {
     resetFormState();
@@ -35,9 +27,8 @@ const formHandlers = {
   error: (errorMessage) => {
     resetFormState();
     elements.rssLinkInput.classList.add('is-invalid');
-    const errorElement = createFeedbackElement(errorMessage, ['text-danger']);
-    errorElement.classList.add('text-danger');
-    elements.jumbotron.appendChild(errorElement);
+    elements.feedback.innerText = errorMessage;
+    elements.feedback.classList.add('text-success', 'text-danger');
   },
 };
 
