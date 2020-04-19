@@ -2,7 +2,7 @@ const elements = {
   rssLinkInput: document.querySelector('input[name="rssLink"]'),
   button: document.querySelector('button'),
   feedback: document.querySelector('.feedback'),
-  rssItems: document.querySelector('.rss-feeds'),
+  rssFeeds: document.querySelector('.rss-feeds'),
   rssPosts: document.querySelector('.rss-posts'),
 };
 
@@ -40,9 +40,18 @@ const createRssPostElement = ({ link, title }) => `
   </div>
 `;
 
+const createRssFeedElement = ({ title, description }) => `
+  <div class="mb-3">
+    <p class="lead mb-1">${title}</p>
+    <p class="small mb-0">${description}</p>
+  </div>
+`;
+
 const handlers = {
   form: ({ state, message }) => formHandlers[state](message),
-  feeds: () => {},
+  feeds: (feeds) => {
+    elements.rssFeeds.innerHTML = feeds.map(createRssFeedElement).join('\n');
+  },
   posts: (posts) => {
     elements.rssPosts.innerHTML = posts.map(createRssPostElement).join('\n');
   },
