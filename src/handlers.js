@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 
 const handleFormSubmit = (state) => (e) => {
   e.preventDefault();
+  state.form = { state: 'loading', message: null };
 
   const formElem = e.target;
   const formData = new FormData(formElem);
@@ -14,25 +15,23 @@ const handleFormSubmit = (state) => (e) => {
   const isInFeed = state.feedList.find(({ url }) => url === rssLink);
 
   if (isInFeed) {
-    state.input.error = 'This link is already in the feed!';
+    state.form = { state: 'error', message: 'This link is already in the feed!' };
     return;
   }
 
-  try {
-    Axios.get(rssLink).then(({ data }) => {
-      const parser = new Parser();
-      return parser.parseString(data);
-    }).then(({ title, description, items }) => {
-      const patchedItems = items.map((item) => ({ ...item, id: nanoid() }));
-      state.feedList.push({
-        url: rssLink, title, description, posts: patchedItems, id: nanoid(),
-      });
-      state.input.error = null;
-      formElem.reset();
+  Axios.get(rssLink).then(({ data }) => {
+    const parser = new Parser();
+    return parser.parseString(data);
+  }).then(({ title, description, items }) => {
+    const patchedItems = items.map((item) => ({ ...item, id: nanoid() }));
+    state.feedList.push({
+      url: rssLink, title, description, posts: patchedItems, id: nanoid(),
     });
-  } catch (err) {
-    state.input.error = err.message;
-  }
+    state.form = { state: 'success', message: 'RSS has been loaded' };
+    formElem.reset();
+  }).catch((err) => {
+    state.form = { state: 'error', message: err.message };
+  });
 };
 
 export default handleFormSubmit;

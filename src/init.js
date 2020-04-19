@@ -5,7 +5,7 @@ import handleFormSubmit from './handlers';
 
 const init = () => {
   const state = onChange({
-    input: { error: null },
+    form: { state: 'default', message: null },
     feedList: [],
   }, watcher);
 
