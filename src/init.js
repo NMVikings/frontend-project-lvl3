@@ -11,7 +11,6 @@ const init = () => {
   i18next.init({
     resources: { en, ru },
     fallbackLng: 'en',
-    debug: true,
   }).then(() => {
     const state = onChange({
       form: { state: 'default', message: null },
