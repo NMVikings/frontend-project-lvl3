@@ -8,7 +8,7 @@ build:
 lint:
 	npx eslint .
 
-run:
+start:
 	npx webpack-dev-server
 
 test:
