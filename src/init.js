@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import { nanoid } from 'nanoid';
 import Axios from 'axios';
 import Parser from 'rss-parser';
-import { differenceBy } from 'lodash';
+import differenceBy from 'lodash/differenceBy';
 
 import watcher from './watchers';
 
