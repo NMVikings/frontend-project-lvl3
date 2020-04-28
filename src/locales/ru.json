@@ -1,10 +1,11 @@
 {
   "translation": {
     "form": {
-      "success": "RSS has been loaded",
+      "success": "RSS был успешно загружен",
       "errors": {
-        "duplicate": "This link is already in the feed!",
-        "network": "Request failed with status code {{status}}"
+        "duplicate": "Это ссылка уже есть в списке!",
+        "network": "Запрос упал со статусом {{status}}",
+        "offline": "Проверьте интернет-соединение"
       }
     }
   }

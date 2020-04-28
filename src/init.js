@@ -41,7 +41,7 @@ const fetchNewPosts = (state) => {
 
 const handleFormSubmit = (state) => (e) => {
   e.preventDefault();
-  state.form = { state: 'loading', message: null };
+  state.form = { state: 'loading', error: null };
 
   const formElem = e.target;
   const formData = new FormData(formElem);
@@ -50,7 +50,7 @@ const handleFormSubmit = (state) => (e) => {
   const isInFeed = state.feeds.find(({ url }) => url === rssLink);
 
   if (isInFeed) {
-    state.form = { state: 'error', message: i18next.t('form.errors.duplicate') };
+    state.form = { state: 'error', error: { type: 'duplicate' } };
     return;
   }
 
@@ -61,9 +61,12 @@ const handleFormSubmit = (state) => (e) => {
       url: rssLink, id: feedId, title, description,
     });
     state.posts.unshift(...posts);
-    state.form = { state: 'success', message: i18next.t('form.success') };
-  }).catch(({ response: { status } }) => {
-    state.form = { state: 'error', message: i18next.t('form.errors.network', { status }) };
+    state.form = { state: 'success' };
+  }).catch(({ response }) => {
+    if (!response) {
+      state.form = { state: 'error', error: { type: 'offline' } };
+    }
+    state.form = { state: 'error', error: { type: 'network', status: response.status } };
   });
 };
 
@@ -82,7 +85,7 @@ const init = () => {
     };
 
     const state = onChange({
-      form: { state: 'default', message: null },
+      form: { state: 'default', error: null },
       feeds: [],
       posts: [],
     }, watcher(elements));

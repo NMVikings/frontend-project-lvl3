@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 
 /* eslint-disable no-param-reassign */
 const resetFormState = (elements) => {
@@ -9,22 +10,22 @@ const resetFormState = (elements) => {
 };
 
 const formHandlers = {
-  default: (_, elements) => resetFormState(elements),
-  success: (message, elements) => {
+  default: resetFormState,
+  success: (elements) => {
     resetFormState(elements);
-    elements.feedback.innerText = message;
+    elements.feedback.innerText = i18next.t('form.success');
     elements.feedback.classList.add('text-success');
     elements.form.reset();
   },
-  loading: (_, elements) => {
+  loading: (elements) => {
     resetFormState(elements);
     elements.rssLinkInput.readOnly = true;
     elements.button.classList.add('disabled');
   },
-  error: (errorMessage, elements) => {
+  error: (elements, { type, status }) => {
     resetFormState(elements);
     elements.rssLinkInput.classList.add('is-invalid');
-    elements.feedback.innerText = errorMessage;
+    elements.feedback.innerText = i18next.t(`form.errors.${type}`, { status });
     elements.feedback.classList.add('text-success', 'text-danger');
   },
 };
@@ -43,7 +44,7 @@ const createRssFeedElement = ({ title, description }) => `
 `;
 
 const handlers = {
-  form: ({ state, message }, elements) => formHandlers[state](message, elements),
+  form: ({ state, error }, elements) => formHandlers[state](elements, error),
   feeds: (feeds, elements) => {
     elements.rssFeeds.innerHTML = feeds.map(createRssFeedElement).join('\n');
   },
