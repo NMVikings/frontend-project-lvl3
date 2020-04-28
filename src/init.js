@@ -85,7 +85,7 @@ const init = () => {
     };
 
     const state = onChange({
-      form: { state: 'default', error: null },
+      form: { state: 'empty', error: null },
       feeds: [],
       posts: [],
     }, watcher(elements));

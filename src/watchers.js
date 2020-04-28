@@ -10,7 +10,7 @@ const resetFormState = (elements) => {
 };
 
 const formHandlers = {
-  default: resetFormState,
+  empty: resetFormState,
   success: (elements) => {
     resetFormState(elements);
     elements.feedback.innerText = i18next.t('form.success');
