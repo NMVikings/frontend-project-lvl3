@@ -4,6 +4,7 @@ import i18next from 'i18next';
 import { nanoid } from 'nanoid';
 import Axios from 'axios';
 import Parser from 'rss-parser';
+import { differenceBy } from 'lodash';
 
 import watcher from './watchers';
 
@@ -25,8 +26,7 @@ const fetchNewPosts = (state) => {
   const promises = state.feeds.map(({ url, id: feedId }) => fetchRssFeed(url)
     .then(({ items }) => {
       const oldPosts = state.posts.filter((post) => feedId === post.feedId);
-      const newPosts = items
-        .filter((item) => oldPosts.every((post) => item.link !== post.link))
+      const newPosts = differenceBy(items, oldPosts, 'link')
         .map((post) => ({ ...post, feedId, id: nanoid() }));
 
       state.posts.unshift(...newPosts);
