@@ -1,12 +1,6 @@
-const elements = {
-  rssLinkInput: document.querySelector('input[name="rssLink"]'),
-  button: document.querySelector('button'),
-  feedback: document.querySelector('.feedback'),
-  rssFeeds: document.querySelector('.rss-feeds'),
-  rssPosts: document.querySelector('.rss-posts'),
-};
 
-const resetFormState = () => {
+/* eslint-disable no-param-reassign */
+const resetFormState = (elements) => {
   elements.button.classList.remove('disabled');
   elements.rssLinkInput.classList.remove('is-invalid');
   elements.rssLinkInput.readOnly = false;
@@ -15,19 +9,20 @@ const resetFormState = () => {
 };
 
 const formHandlers = {
-  default: resetFormState,
-  success: (message) => {
-    resetFormState();
+  default: (_, elements) => resetFormState(elements),
+  success: (message, elements) => {
+    resetFormState(elements);
     elements.feedback.innerText = message;
     elements.feedback.classList.add('text-success');
+    elements.form.reset();
   },
-  loading: () => {
-    resetFormState();
+  loading: (_, elements) => {
+    resetFormState(elements);
     elements.rssLinkInput.readOnly = true;
     elements.button.classList.add('disabled');
   },
-  error: (errorMessage) => {
-    resetFormState();
+  error: (errorMessage, elements) => {
+    resetFormState(elements);
     elements.rssLinkInput.classList.add('is-invalid');
     elements.feedback.innerText = errorMessage;
     elements.feedback.classList.add('text-success', 'text-danger');
@@ -48,15 +43,15 @@ const createRssFeedElement = ({ title, description }) => `
 `;
 
 const handlers = {
-  form: ({ state, message }) => formHandlers[state](message),
-  feeds: (feeds) => {
+  form: ({ state, message }, elements) => formHandlers[state](message, elements),
+  feeds: (feeds, elements) => {
     elements.rssFeeds.innerHTML = feeds.map(createRssFeedElement).join('\n');
   },
-  posts: (posts) => {
+  posts: (posts, elements) => {
     elements.rssPosts.innerHTML = posts.map(createRssPostElement).join('\n');
   },
 };
 
-const watcher = (path, value) => handlers[path](value);
+const watch = (elements) => (path, value) => handlers[path](value, elements);
 
-export default watcher;
+export default watch;

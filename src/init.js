@@ -62,7 +62,6 @@ const handleFormSubmit = (state) => (e) => {
     });
     state.posts.unshift(...posts);
     state.form = { state: 'success', message: i18next.t('form.success') };
-    formElem.reset();
   }).catch(({ response: { status } }) => {
     state.form = { state: 'error', message: i18next.t('form.errors.network', { status }) };
   });
@@ -73,11 +72,21 @@ const init = () => {
     resources: { en, ru },
     fallbackLng: 'en',
   }).then(() => {
+    const elements = {
+      rssLinkInput: document.querySelector('input[name="rssLink"]'),
+      button: document.querySelector('button'),
+      feedback: document.querySelector('.feedback'),
+      rssFeeds: document.querySelector('.rss-feeds'),
+      rssPosts: document.querySelector('.rss-posts'),
+      form: document.querySelector('form'),
+    };
+
     const state = onChange({
       form: { state: 'default', message: null },
       feeds: [],
       posts: [],
-    }, watcher);
+    }, watcher(elements));
+
 
     fetchNewPosts(state);
     document.querySelector('form').addEventListener('submit', handleFormSubmit(state));
