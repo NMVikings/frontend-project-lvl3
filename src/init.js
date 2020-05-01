@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import { nanoid } from 'nanoid';
 import Axios from 'axios';
 import Parser from 'rss-parser';
-import { string, ValidationError } from 'yup'
+import { string, ValidationError } from 'yup';
 import differenceBy from 'lodash/differenceBy';
 
 import watcher from './watchers';
@@ -40,14 +40,14 @@ const fetchNewPosts = (state) => {
 };
 
 const validateUrl = (url, feeds) => {
-  const rssLinks = feeds.map(({ url }) => url);
+  const rssLinks = feeds.map((feed) => feed.url);
   const rssLinkSchema = string()
     .required('url.required')
     .url('url.invalid')
     .notOneOf(rssLinks, 'url.exists');
 
-  rssLinkSchema.validateSync(url)
-}
+  rssLinkSchema.validateSync(url);
+};
 
 const handleFormSubmit = (state) => (e) => {
   e.preventDefault();
@@ -63,10 +63,10 @@ const handleFormSubmit = (state) => (e) => {
     if (err instanceof ValidationError) {
       state.form = { state: 'error', error: { type: err.message } };
       return;
-    } else {
-      throw error;
-    };
-  };
+    }
+
+    throw err;
+  }
 
   fetchRssFeed(rssLink).then(({ title, description, items }) => {
     const feedId = nanoid();
