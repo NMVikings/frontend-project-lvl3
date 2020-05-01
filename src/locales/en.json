@@ -3,7 +3,11 @@
     "form": {
       "success": "RSS has been loaded",
       "errors": {
-        "duplicate": "This link is already in the feed!",
+        "url": {
+          "required": "You didn't provide any link!",
+          "invalid": "The link is invalid!",
+          "exists": "This link is already in the feed!"
+        },
         "network": "Request failed with status code {{status}}",
         "offline": "Check your internet connection"
       }
