@@ -11,16 +11,14 @@ import watcher from './watchers';
 
 import en from './locales/en.json';
 import ru from './locales/ru.json';
+import parseRss from './rss';
 
 const fetchingTimeout = 5000;
 
 const fetchRssFeed = (rssLink) => {
   const corsFreeRssLink = `https://cors-anywhere.herokuapp.com/${rssLink}`;
 
-  return Axios.get(corsFreeRssLink).then(({ data }) => {
-    const parser = new Parser();
-    return parser.parseString(data);
-  });
+  return Axios.get(corsFreeRssLink).then(({ data }) => parseRss(data));
 };
 
 const fetchNewPosts = (state) => {
@@ -76,12 +74,13 @@ const handleFormSubmit = (state) => (e) => {
     });
     state.posts.unshift(...posts);
     state.form = { state: 'success' };
-  }).catch(({ response }) => {
-    if (!response) {
-      state.form = { state: 'error', error: { type: 'offline' } };
-    }
-    state.form = { state: 'error', error: { type: 'network', status: response.status } };
-  });
+  })
+  // .catch(({ response }) => {
+  //   if (!response) {
+  //     state.form = { state: 'error', error: { type: 'offline' } };
+  //   }
+  //   state.form = { state: 'error', error: { type: 'network', status: response.status } };
+  // });
 };
 
 const init = () => {
