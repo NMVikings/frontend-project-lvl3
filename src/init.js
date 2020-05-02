@@ -3,7 +3,6 @@ import onChange from 'on-change';
 import i18next from 'i18next';
 import { nanoid } from 'nanoid';
 import Axios from 'axios';
-import Parser from 'rss-parser';
 import { string, ValidationError } from 'yup';
 import differenceBy from 'lodash/differenceBy';
 
