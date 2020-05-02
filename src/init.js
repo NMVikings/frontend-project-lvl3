@@ -74,7 +74,7 @@ const handleFormSubmit = (state) => (e) => {
     });
     state.posts.unshift(...posts);
     state.form = { state: 'success' };
-  })
+  });
   // .catch(({ response }) => {
   //   if (!response) {
   //     state.form = { state: 'error', error: { type: 'offline' } };
