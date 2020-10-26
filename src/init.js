@@ -102,7 +102,6 @@ const init = () => {
       posts: [],
     }, watcher(elements));
 
-
     fetchNewPosts(state);
     document.querySelector('form').addEventListener('submit', handleFormSubmit(state));
   });
