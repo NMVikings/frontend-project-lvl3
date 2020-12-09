@@ -31,25 +31,29 @@ const formHandlers = {
 };
 
 const createRssPostElement = ({ link, title }) => `
-  <div>
-    <a rel='noopener noreferrer' target="_blank" href=${link}>${title}</a>
-  </div>
+  <li class="list-group-item d-flex justify-content-between align-items-start">
+    <a rel='noopener noreferrer' target="_blank" href=${link} class="font-weight-normal">${title}</a>
+  </li>
 `;
 
 const createRssFeedElement = ({ title, description }) => `
-  <div class="mb-3">
-    <p class="lead mb-1">${title}</p>
-    <p class="small mb-0">${description}</p>
-  </div>
+  <li class="list-group-item">
+    <h3>${title}</h3>
+    <p>${description}</p>
+  </li>
 `;
 
 const handlers = {
   form: ({ state, error }, elements) => formHandlers[state](elements, error),
   feeds: (feeds, elements) => {
-    elements.rssFeeds.innerHTML = feeds.map(createRssFeedElement).join("\n");
+    const feedsHTML = feeds.map(createRssFeedElement).join("\n");
+
+    elements.rssFeeds.innerHTML = `<h2>Feeds</h2><ul class="list-group mb-5">${feedsHTML}</ul>`;
   },
   posts: (posts, elements) => {
-    elements.rssPosts.innerHTML = posts.map(createRssPostElement).join("\n");
+    const postsHTML = posts.map(createRssPostElement).join("\n");
+
+    elements.rssPosts.innerHTML = `<h2>Feeds</h2><ul class="list-group">${postsHTML}</ul>`;
   },
 };
 

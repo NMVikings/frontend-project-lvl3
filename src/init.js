@@ -86,6 +86,7 @@ const handleFormSubmit = (state) => (e) => {
     .catch(({ response }) => {
       if (!response) {
         state.form = { state: "error", error: { type: "offline" } };
+        return;
       }
       state.form = {
         state: "error",
@@ -105,8 +106,8 @@ const init = () => {
         rssLinkInput: document.querySelector('input[name="rssLink"]'),
         button: document.querySelector("button"),
         feedback: document.querySelector(".feedback"),
-        rssFeeds: document.querySelector(".rss-feeds"),
-        rssPosts: document.querySelector(".rss-posts"),
+        rssFeeds: document.querySelector(".feeds"),
+        rssPosts: document.querySelector(".posts"),
         form: document.querySelector("form"),
       };
 
