@@ -117,6 +117,7 @@ const init = () => {
         feeds: [],
         posts: [],
         modal: { postId: null },
+        ui: { seenPosts: new Set() },
       };
 
       const watchedState = watch(initState, elements);
@@ -125,12 +126,13 @@ const init = () => {
         "click",
         ({
           target: {
-            dataset: { id, toggle },
+            dataset: { postId },
           },
         }) => {
-          if (toggle !== "modal") return;
+          if (!postId) return;
 
-          watchedState.modal.postId = id;
+          watchedState.modal.postId = postId;
+          watchedState.ui.seenPosts.add(postId);
         }
       );
 

@@ -35,27 +35,42 @@ const watch = (initState, elements) => {
     },
   };
 
-  const createRssPostElement = ({ link, title, id }) => `
-  <li class="list-group-item d-flex justify-content-between align-items-start">
-    <a rel='noopener noreferrer' target="_blank" href=${link} class="font-weight-normal">${title}</a>
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      data-id=${id}
-      data-toggle="modal"
-      data-target="#modal"
-    >
-      ${i18next.t("preview")}
-    </button>
-  </li>
-`;
+  const createRssPostElement = ({ link, title, id }, wasSeen) => {
+    const linkClass = wasSeen ? "font-weight-normal" : "font-weight-bold";
+
+    return `
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <a rel='noopener noreferrer' target="_blank" data-post-id=${id} href=${link} class="${linkClass}">${title}</a>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          data-post-id=${id}
+          data-toggle="modal"
+          data-target="#modal"
+        >
+          ${i18next.t("preview")}
+        </button>
+      </li>
+    `;
+  };
 
   const createRssFeedElement = ({ title, description }) => `
-  <li class="list-group-item">
-    <h3>${title}</h3>
-    <p>${description}</p>
-  </li>
-`;
+    <li class="list-group-item">
+      <h3>${title}</h3>
+      <p>${description}</p>
+    </li>
+  `;
+
+  const renderPosts = (posts, seenPosts) => {
+    const postsHTML = posts
+      .map((post) => {
+        const wasSeen = seenPosts.has(post.id);
+        return createRssPostElement(post, wasSeen);
+      })
+      .join("\n");
+
+    elements.rssPosts.innerHTML = `<h2>Feeds</h2><ul class="list-group">${postsHTML}</ul>`;
+  };
 
   const handlers = {
     form: ({ state: formState, error }) => formHandlers[formState](error),
@@ -65,9 +80,10 @@ const watch = (initState, elements) => {
       elements.rssFeeds.innerHTML = `<h2>Feeds</h2><ul class="list-group mb-5">${feedsHTML}</ul>`;
     },
     posts: (posts) => {
-      const postsHTML = posts.map(createRssPostElement).join("\n");
-
-      elements.rssPosts.innerHTML = `<h2>Feeds</h2><ul class="list-group">${postsHTML}</ul>`;
+      renderPosts(posts, initState.ui.seenPosts);
+    },
+    "ui.seenPosts": (seenPosts) => {
+      renderPosts(initState.posts, seenPosts);
     },
     "modal.postId": (id) => {
       const { title, description, link } = find(initState.posts, { id });
