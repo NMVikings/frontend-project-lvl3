@@ -11,6 +11,13 @@
         "network": "Request failed with status code {{status}}",
         "offline": "Check your internet connection"
       }
+    },
+    "preview": "Preview",
+    "modal": {
+      "buttons": {
+        "submit": "Full article",
+        "close": "Close"
+      }
     }
   }
 }

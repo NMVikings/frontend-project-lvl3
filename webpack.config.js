@@ -20,6 +20,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({ template: "index.html" }),
     // new BundleAnalyzerPlugin(),
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({ shorthands: true }),
   ],
 };

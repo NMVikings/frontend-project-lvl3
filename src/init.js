@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import onChange from "on-change";
+import "bootstrap";
 import i18next from "i18next";
 import { nanoid } from "nanoid";
 import Axios from "axios";
 import { string, ValidationError } from "yup";
 import differenceBy from "lodash/differenceBy";
 
-import watcher from "./watchers";
+import watch from "./watchers";
 
 import en from "./locales/en.json";
 import ru from "./locales/ru.json";
@@ -109,21 +109,35 @@ const init = () => {
         rssFeeds: document.querySelector(".feeds"),
         rssPosts: document.querySelector(".posts"),
         form: document.querySelector("form"),
+        modal: document.querySelector(".modal"),
       };
 
-      const state = onChange(
-        {
-          form: { state: "empty", error: null },
-          feeds: [],
-          posts: [],
-        },
-        watcher(elements)
+      const initState = {
+        form: { state: "empty", error: null },
+        feeds: [],
+        posts: [],
+        modal: { postId: null },
+      };
+
+      const watchedState = watch(initState, elements);
+
+      elements.rssPosts.addEventListener(
+        "click",
+        ({
+          target: {
+            dataset: { id, toggle },
+          },
+        }) => {
+          if (toggle !== "modal") return;
+
+          watchedState.modal.postId = id;
+        }
       );
 
-      fetchNewPosts(state);
+      fetchNewPosts(watchedState);
       document
         .querySelector("form")
-        .addEventListener("submit", handleFormSubmit(state));
+        .addEventListener("submit", handleFormSubmit(watchedState));
     });
 };
 
