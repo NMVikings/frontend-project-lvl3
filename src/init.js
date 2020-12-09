@@ -70,24 +70,28 @@ const handleFormSubmit = (state) => (e) => {
     throw err;
   }
 
-  fetchRssFeed(rssLink).then(({ title, description, items }) => {
-    const feedId = nanoid();
-    const posts = items.map((item) => ({ ...item, id: nanoid(), feedId }));
-    state.feeds.unshift({
-      url: rssLink,
-      id: feedId,
-      title,
-      description,
+  fetchRssFeed(rssLink)
+    .then(({ title, description, items }) => {
+      const feedId = nanoid();
+      const posts = items.map((item) => ({ ...item, id: nanoid(), feedId }));
+      state.feeds.unshift({
+        url: rssLink,
+        id: feedId,
+        title,
+        description,
+      });
+      state.posts.unshift(...posts);
+      state.form = { state: "success" };
+    })
+    .catch(({ response }) => {
+      if (!response) {
+        state.form = { state: "error", error: { type: "offline" } };
+      }
+      state.form = {
+        state: "error",
+        error: { type: "network", status: response.status },
+      };
     });
-    state.posts.unshift(...posts);
-    state.form = { state: "success" };
-  });
-  // .catch(({ response }) => {
-  //   if (!response) {
-  //     state.form = { state: 'error', error: { type: 'offline' } };
-  //   }
-  //   state.form = { state: 'error', error: { type: 'network', status: response.status } };
-  // });
 };
 
 const init = () => {
