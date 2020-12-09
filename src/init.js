@@ -36,7 +36,7 @@ const fetchNewPosts = (state) => {
       .catch(() => null)
   );
 
-  Promise.all(promises).finally(() => {
+  Promise.allSettled(promises).then(() => {
     setTimeout(() => fetchNewPosts(state), fetchingTimeout);
   });
 };
