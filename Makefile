@@ -9,7 +9,7 @@ lint:
 	npx eslint .
 
 start:
-	npx webpack-dev-server
+	npx webpack serve
 
 test:
 	npm run test
